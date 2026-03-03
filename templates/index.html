@@ -3,188 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CloudEdit | Future of Global Video Rendering</title>
+    <title>CloudEdit Pro | AI Video Systems</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
-    
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-        }
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
     <style>
-        :root {
-            --primary: #ffffff;
-            --accent: #007AFF; /* Apple Blue */
-            --bg: #000000;
-        }
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg);
-            color: var(--primary);
-            overflow-x: hidden;
-        }
-
-        /* Smooth Reveal Animation */
-        @keyframes revealUp {
-            from { opacity: 0; transform: translateY(40px) scale(0.98); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        .reveal { animation: revealUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-
-        /* Animated Upload Zone */
-        .upload-container {
-            position: relative;
-            border: 1px solid rgba(255,255,255,0.05);
-            background: rgba(255,255,255,0.01);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
-        }
-        .upload-container:hover {
-            border-color: rgba(255,255,255,0.3);
-            background: rgba(255,255,255,0.03);
-            box-shadow: 0 0 40px rgba(255,255,255,0.05);
-        }
-        
-        /* Pulse Animation for Upload Hint */
-        @keyframes pulseBorder {
-            0% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.05); opacity: 1; }
-            100% { transform: scale(1); opacity: 0.5; }
-        }
-        .pulse-circle {
-            width: 12px; height: 12px;
-            background: #fff;
-            border-radius: 50%;
-            animation: pulseBorder 2s infinite ease-in-out;
-        }
-
-        /* Custom Processing Line */
-        .progress-line {
-            height: 1px;
-            width: 0%;
-            background: linear-gradient(90deg, transparent, #fff, transparent);
-            box-shadow: 0 0 15px #fff;
-            transition: width 0.4s ease;
-        }
-
-        /* Buttons & Inputs */
-        .btn-main {
-            background: #fff; color: #000;
-            padding: 18px 40px;
-            border-radius: 100px;
-            font-weight: 700;
-            font-size: 12px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            transition: 0.4s;
-        }
-        .btn-main:hover {
-            background: #e0e0e0;
-            transform: scale(1.05);
-            letter-spacing: 3px;
-        }
+        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; }
+        .upload-glow { border: 1px dashed #333; transition: 0.4s; }
+        .upload-glow:hover { border-color: #fff; box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+        .btn-pay { background: #fff; color: #000; font-weight: bold; border-radius: 50px; padding: 15px 40px; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center">
+<body class="flex flex-col items-center justify-center min-h-screen p-6">
 
-    <nav class="w-full max-w-7xl flex justify-between items-center p-10 reveal" style="animation-delay: 0.1s;">
-        <div class="text-[11px] font-extrabold tracking-[0.6em] uppercase opacity-30">CloudEdit // Global Node</div>
-        <div id="google_translate_element" class="opacity-40 hover:opacity-100 transition duration-700"></div>
-    </nav>
+    <div class="text-center mb-16">
+        <h1 class="text-6xl font-bold tracking-tighter mb-4">AI Mastering.</h1>
+        <p class="text-neutral-500 uppercase tracking-widest text-[10px]">195 Countries Support • Instant Dubbing</p>
+    </div>
 
-    <main class="w-full max-w-5xl px-6 py-12 flex flex-col items-center">
-        
-        <div class="text-center mb-24 reveal" style="animation-delay: 0.3s;">
-            <h1 class="text-6xl md:text-9xl font-light tracking-tighter leading-none mb-10">
-                Visual <br> <span class="opacity-10 italic">Intelligence.</span>
-            </h1>
-            <p class="text-neutral-500 text-[10px] tracking-[0.5em] uppercase max-w-md mx-auto leading-loose">
-                ১৯৫টি দেশে একযোগে এআই ভিডিও প্রসেসিং এবং ক্লাউড রেন্ডারিং।
-            </p>
-        </div>
-
-        <div class="w-full reveal" style="animation-delay: 0.5s;">
-            <div class="bg-[#050505] border border-white/5 rounded-[48px] p-10 md:p-20 shadow-2xl">
-                <form action="/edit" method="post" enctype="multipart/form-data" id="renderForm" class="space-y-20">
-                    
-                    <div class="upload-container h-80 rounded-[32px] flex flex-col items-center justify-center cursor-pointer group">
-                        <input type="file" name="video" id="videoInput" class="absolute inset-0 opacity-0 z-30 cursor-pointer" accept="video/*" required>
-                        
-                        <div class="flex flex-col items-center space-y-6 pointer-events-none">
-                            <div class="pulse-circle"></div>
-                            <div class="text-center">
-                                <p class="text-white text-sm tracking-[0.2em] font-medium group-hover:tracking-[0.3em] transition-all duration-500" id="fileName">
-                                    ভিডিও ফাইলটি এখানে আনুন
-                                </p>
-                                <p class="text-[9px] text-neutral-700 mt-4 uppercase tracking-[0.4em]">RAW ASSET DEPLOYMENT</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-end">
-                        <div class="space-y-6">
-                            <label class="text-[9px] uppercase tracking-[0.5em] text-neutral-600 font-bold block ml-1">Overlay Metadata</label>
-                            <input type="text" name="text" placeholder="টেক্সট লিখুন..." 
-                                   class="w-full bg-transparent border-b border-neutral-800 py-4 text-white text-lg font-light focus:border-white outline-none transition-colors duration-500">
-                        </div>
-                        <button type="submit" id="submitBtn" class="btn-main">
-                            রেন্ডার শুরু করুন
-                        </button>
-                    </div>
-                </form>
-
-                <div id="loaderUI" class="hidden mt-24 space-y-6">
-                    <div class="w-full bg-neutral-900 h-[1px]">
-                        <div id="bar" class="progress-line"></div>
-                    </div>
-                    <div class="flex justify-between items-center text-[9px] tracking-[0.5em] text-neutral-600 uppercase">
-                        <span class="animate-pulse">Global Encoding Active</span>
-                        <span id="pct">0%</span>
-                    </div>
-                </div>
+    <div class="w-full max-w-2xl bg-[#0a0a0a] p-10 rounded-[40px] border border-white/5">
+        <form action="/edit" method="POST" enctype="multipart/form-data">
+            <div class="upload-glow h-60 rounded-3xl flex flex-col items-center justify-center mb-10 cursor-pointer">
+                <input type="file" name="video" class="absolute opacity-0 h-60 w-full cursor-pointer" required>
+                <p class="text-sm text-neutral-400">ভিডিও ফাইল এখানে ড্রপ করুন</p>
             </div>
-        </div>
-    </main>
 
-    <footer class="mt-auto w-full max-w-7xl p-16 flex flex-col md:flex-row justify-between text-[10px] tracking-[0.5em] text-neutral-800 font-bold reveal" style="animation-delay: 0.7s;">
-        <div>SYSTEM STATUS: OPTIMAL</div>
-        <div class="flex space-x-12 mt-6 md:mt-0">
-            <span>SECURE AES-256</span>
-            <span>195 COUNTRIES ACTIVE</span>
-        </div>
+            <input type="text" name="text" placeholder="Overlay Text" class="w-full bg-transparent border-b border-neutral-800 py-4 mb-10 outline-none focus:border-white">
+            
+            <div class="flex flex-col gap-4">
+                <button type="submit" class="btn-pay hover:bg-neutral-200 transition">প্রসেস শুরু করুন (ফ্রি)</button>
+                <button type="button" onclick="location.href='/create-checkout-session'" class="text-[10px] text-neutral-600 uppercase tracking-widest hover:text-white transition">Get Pro - $5 (Remove Watermark)</button>
+            </div>
+        </form>
+    </div>
+
+    <footer class="mt-20 text-[9px] text-neutral-800 tracking-[0.5em] font-bold">
+        PAYPAL & STRIPE SECURED • GOOGLE CLOUD STORAGE ACTIVE
     </footer>
 
-    <script>
-        const videoInput = document.getElementById('videoInput');
-        const fileName = document.getElementById('fileName');
-        const form = document.getElementById('renderForm');
-        const loader = document.getElementById('loaderUI');
-        const bar = document.getElementById('bar');
-        const pct = document.getElementById('pct');
-
-        videoInput.onchange = (e) => {
-            if (e.target.files.length > 0) {
-                fileName.innerText = "READY: " + e.target.files[0].name.toUpperCase();
-                fileName.classList.add('text-white');
-            }
-        };
-
-        form.onsubmit = () => {
-            loader.classList.remove('hidden');
-            document.getElementById('submitBtn').style.opacity = "0.1";
-            document.getElementById('submitBtn').innerText = "Processing";
-            let p = 0;
-            const timer = setInterval(() => {
-                if(p < 99) {
-                    p++;
-                    bar.style.width = p + '%';
-                    pct.innerText = p + '%';
-                }
-            }, 100);
-        };
-    </script>
 </body>
 </html>
