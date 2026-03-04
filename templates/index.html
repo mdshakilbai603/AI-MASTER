@@ -3,41 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CloudEdit Pro | AI Video Systems</title>
+    <title>AI MASTER | Global Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;400;700&display=swap" rel="stylesheet">
+    
     <style>
-        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; }
-        .upload-glow { border: 1px dashed #333; transition: 0.4s; }
-        .upload-glow:hover { border-color: #fff; box-shadow: 0 0 20px rgba(255,255,255,0.1); }
-        .btn-pay { background: #fff; color: #000; font-weight: bold; border-radius: 50px; padding: 15px 40px; }
+        :root { --bg: #000000; }
+        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; overflow: hidden; margin: 0; }
+
+        /* Splash Screen - আপনার লোগো এনিমেশন */
+        #splash {
+            position: fixed; inset: 0; background: #000; z-index: 100;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .splash-content { text-align: center; }
+        .splash-logo { 
+            font-size: 12px; letter-spacing: 1.2em; text-transform: uppercase; 
+            font-weight: 100; opacity: 0; animation: logoFade 1.8s ease-in-out forwards;
+        }
+        @keyframes logoFade {
+            0% { opacity: 0; letter-spacing: 0.5em; filter: blur(10px); }
+            50% { opacity: 1; filter: blur(0px); }
+            100% { opacity: 0; letter-spacing: 1.5em; }
+        }
+
+        /* Ambient background logic from your favorite file */
+        .bg-gradient {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #111 0%, #000 100%);
+            z-index: -1;
+        }
+        .ambient-glow {
+            position: absolute; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+            border-radius: 50%; top: -200px; left: -200px;
+            animation: move 20s infinite alternate;
+        }
+        @keyframes move { from { transform: translate(0,0); } to { transform: translate(100vw, 50vh); } }
+
+        .glass-studio {
+            background: rgba(255, 255, 255, 0.01);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 60px;
+            opacity: 0; transform: translateY(20px);
+        }
+        .loaded .glass-studio { opacity: 1; transform: translateY(0); transition: 1s cubic-bezier(0.19, 1, 0.22, 1); }
+
+        .upload-pulse {
+            border: 1px dashed rgba(255,255,255,0.1);
+            position: relative; overflow: hidden; transition: 0.4s;
+        }
+        .upload-pulse:hover { border-color: #fff; background: rgba(255,255,255,0.02); }
+
+        .loading-line { height: 2px; width: 0%; background: #fff; box-shadow: 0 0 15px #fff; transition: 0.3s; }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen p-6">
+<body class="flex items-center justify-center min-h-screen">
 
-    <div class="text-center mb-16">
-        <h1 class="text-6xl font-bold tracking-tighter mb-4">AI Mastering.</h1>
-        <p class="text-neutral-500 uppercase tracking-widest text-[10px]">195 Countries Support • Instant Dubbing</p>
+    <div id="splash">
+        <div class="splash-content">
+            <div class="splash-logo">Initializing AI Engine</div>
+        </div>
     </div>
 
-    <div class="w-full max-w-2xl bg-[#0a0a0a] p-10 rounded-[40px] border border-white/5">
-        <form action="/edit" method="POST" enctype="multipart/form-data">
-            <div class="upload-glow h-60 rounded-3xl flex flex-col items-center justify-center mb-10 cursor-pointer">
-                <input type="file" name="video" class="absolute opacity-0 h-60 w-full cursor-pointer" required>
-                <p class="text-sm text-neutral-400">ভিডিও ফাইল এখানে ড্রপ করুন</p>
-            </div>
+    <div class="bg-gradient"></div>
+    <div class="ambient-glow"></div>
 
-            <input type="text" name="text" placeholder="Overlay Text" class="w-full bg-transparent border-b border-neutral-800 py-4 mb-10 outline-none focus:border-white">
-            
-            <div class="flex flex-col gap-4">
-                <button type="submit" class="btn-pay hover:bg-neutral-200 transition">প্রসেস শুরু করুন (ফ্রি)</button>
-                <button type="button" onclick="location.href='/create-checkout-session'" class="text-[10px] text-neutral-600 uppercase tracking-widest hover:text-white transition">Get Pro - $5 (Remove Watermark)</button>
+    <audio id="introAudio" src="https://assets.mixkit.co/sfx/preview/mixkit-deep-cinematic-whoosh-603.mp3"></audio>
+
+    <div class="container max-w-5xl px-6 py-12">
+        <header class="text-center mb-20">
+            <h1 class="text-7xl md:text-9xl font-extralight tracking-tighter mb-4">
+                AI <span class="font-bold opacity-10 text-white">MASTER.</span>
+            </h1>
+            <div class="flex items-center justify-center gap-6 text-[9px] tracking-[0.6em] text-neutral-700 font-bold uppercase">
+                <span>195 Nodes Active</span>
+                <span class="w-1 h-1 bg-green-500 rounded-full animate-pulse"></span>
+                <span>Universal Access</span>
             </div>
-        </form>
+        </header>
+
+        <div class="glass-studio p-1 md:p-2">
+            <div class="bg-black rounded-[58px] p-10 md:p-20">
+                <form action="/edit" method="POST" enctype="multipart/form-data" id="editorForm">
+                    <div class="upload-pulse h-80 rounded-[40px] flex flex-col items-center justify-center mb-16 cursor-pointer group">
+                        
+                        <input type="file" name="video" id="videoInput" 
+                               class="absolute inset-0 opacity-0 z-30 cursor-pointer" 
+                               accept="video/*,image/*,audio/*,.pdf,.zip"> 
+                        
+                        <div class="text-center space-y-4 pointer-events-none z-10">
+                            <div class="text-neutral-500 text-xs tracking-[0.4em] font-light uppercase transition group-hover:text-white" id="fileName">Select Any Digital Asset</div>
+                            <div class="text-[7px] text-neutral-800 tracking-[0.8em] font-bold uppercase">Direct Storage Interface</div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-end">
+                        <div class="md:col-span-8 space-y-4">
+                            <p class="text-[8px] tracking-[0.5em] text-neutral-700 font-bold uppercase ml-1">Overlay Metadata</p>
+                            <input type="text" name="text" placeholder="Type branding text..." 
+                                   class="w-full bg-transparent border-b border-neutral-900 py-4 text-xl font-light outline-none focus:border-white transition-all duration-700">
+                        </div>
+                        <div class="md:col-span-4">
+                            <button type="submit" id="renderBtn" class="w-full bg-white text-black py-6 rounded-2xl font-bold text-[10px] tracking-[0.4em] uppercase hover:bg-neutral-200 transition-all active:scale-95 shadow-2xl">
+                                Initialize AI Render
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <div id="loader" class="hidden mt-20 space-y-4">
+                    <div class="w-full bg-neutral-900 h-[1px]">
+                        <div id="progressBar" class="loading-line"></div>
+                    </div>
+                    <div class="flex justify-between text-[8px] tracking-[0.5em] text-neutral-500 uppercase">
+                        <span class="animate-pulse">Processing Universal Asset...</span>
+                        <span id="pct">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <footer class="mt-20 text-[9px] text-neutral-800 tracking-[0.5em] font-bold">
-        PAYPAL & STRIPE SECURED • GOOGLE CLOUD STORAGE ACTIVE
-    </footer>
+    <script>
+        const splash = document.getElementById('splash');
+        const videoInput = document.getElementById('videoInput');
+        const fileName = document.getElementById('fileName');
+        const form = document.getElementById('editorForm');
+        const loader = document.getElementById('loader');
+        const bar = document.getElementById('progressBar');
+        const pct = document.getElementById('pct');
 
+        // Splash Screen Logic (1.8s)
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                splash.style.opacity = '0';
+                document.body.classList.add('loaded');
+                setTimeout(() => splash.remove(), 800);
+            }, 1800);
+        });
+
+        window.addEventListener('mouseover', () => {
+            document.getElementById('introAudio').play().catch(()=>{});
+        }, { once: true });
+
+        videoInput.onchange = (e) => {
+            if (e.target.files.length > 0) {
+                fileName.innerText = "ASSET LOADED: " + e.target.files[0].name.toUpperCase();
+                fileName.style.color = "#fff";
+            }
+        };
+
+        form.onsubmit = () => {
+            loader.classList.remove('hidden');
+            document.getElementById('renderBtn').innerText = "Processing";
+            document.getElementById('renderBtn').style.opacity = '0.2';
+            let w = 0;
+            const step = setInterval(() => {
+                if(w < 99) {
+                    w++;
+                    bar.style.width = w + '%';
+                    pct.innerText = w + '%';
+                }
+            }, 100);
+        };
+    </script>
 </body>
 </html>
