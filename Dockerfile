@@ -1,26 +1,15 @@
-FROM python:3.10-slim
+FROM nvidia/cuda:12.0-base-ubuntu22.04
 
-# ভিডিও প্রসেসিং এবং ক্লাউড টুলস ইনস্টল
 RUN apt-get update && apt-get install -y \
-    ffmpeg \
-    curl \
-    libsm6 \
-    libxext6 \
+    python3-pip ffmpeg git libsm6 libxext6 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
+COPY requirements.txt .
+RUN pip3 install --no-cache-dir -r requirements.txt
 
-# সব লাইব্রেরি একসাথে ইনস্টল
-RUN pip install --no-cache-dir \
-    flask \
-    gunicorn \
-    stripe \
-    opencv-python \
-    moviepy \
-    torch \
-    google-cloud-storage
+# AI মডেল ডাউনলোড (HuggingFace থেকে)
+RUN python3 -c "import torch; print('CUDA Available:', torch.cuda.is_available())"
 
 COPY . .
-
-# অটোমেটিক ইঞ্জিন স্টার্ট
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "engine:app", "--timeout", "0"]
+CMD ["gunicorn", "--bind", "0.0.0.0:10000", "engine:app", "--timeout", "0"]
