@@ -1,23 +1,69 @@
-<div class="editor-layout">
-    <aside class="tool-sidebar">
-        <button onclick="applyFeature('bg_remove')">AI BG Removal</button>
-        <button onclick="applyFeature('slow_mo')">Speed Control</button>
-        <button onclick="applyFeature('cinematic')">Cinematic LUTs</button>
-        <button onclick="applyFeature('stabilize')">Anti-Shake</button>
-        <button onclick="applyFeature('auto_subtitle')">Auto Caption</button>
-        </aside>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI MASTER | Global Video Cloud</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+        .glass { background: rgba(255,255,255,0.05); border: 1px solid #222; border-radius: 20px; transition: 0.3s; }
+        .glass:hover { border-color: #fff; background: #111; }
+    </style>
+</head>
+<body class="p-10">
+    <div class="max-w-6xl mx-auto">
+        <header class="flex justify-between items-center mb-10">
+            <h1 class="text-2xl font-black tracking-tighter">AI MASTER <span class="text-blue-500">GPU-100</span></h1>
+            <div class="text-[10px] text-green-500">SYSTEM: ONLINE (HUGGINGFACE + GOOGLE CLOUD)</div>
+        </header>
 
-    <main class="preview-area">
-        <video id="canvas" controls></video>
-        <div id="timeline">
+        <div class="grid lg:grid-cols-3 gap-10">
+            <div class="lg:col-span-2 space-y-6">
+                <div class="glass p-6 aspect-video flex items-center justify-center relative overflow-hidden">
+                    <video id="preview" class="hidden w-full h-full object-cover" controls></video>
+                    <div id="uploadPlaceholder" class="text-neutral-600 text-xs">UPLOAD SOURCE ASSET TO START</div>
+                </div>
+                
+                <div class="feature-grid">
+                    <button onclick="setTask('dubbing')" class="glass p-4 text-[10px]">GLOBAL DUBBING</button>
+                    <button onclick="setTask('upscale')" class="glass p-4 text-[10px]">4K UPSCALE</button>
+                    <button onclick="setTask('bg_remove')" class="glass p-4 text-[10px]">AI BG REMOVE</button>
+                    <button onclick="setTask('slowmo')" class="glass p-4 text-[10px]">SMOOTH SLOWMO</button>
+                    <button onclick="setTask('subtitle')" class="glass p-4 text-[10px]">AUTO CAPTION</button>
+                </div>
             </div>
-    </main>
-</div>
 
-<style>
-    /* CapCut Dark Mode UI */
-    .editor-layout { display: flex; background: #000; height: 100vh; }
-    .tool-sidebar { width: 80px; border-right: 1px solid #222; display: flex; flex-direction: column; }
-    .tool-sidebar button { font-size: 8px; color: #888; padding: 15px 5px; border-bottom: 1px solid #111; }
-    .tool-sidebar button:hover { background: #fff; color: #000; }
-</style>
+            <div class="glass p-8">
+                <form id="renderForm">
+                    <input type="file" name="video" class="mb-6 text-xs" required>
+                    <input type="hidden" name="task" id="taskInput" value="dubbing">
+                    
+                    <label class="block text-[10px] text-neutral-500 mb-2">TARGET DUBBING LANGUAGE</label>
+                    <select name="target_lang" class="w-full bg-black border border-neutral-800 p-3 rounded-lg mb-6 text-xs">
+                        <option value="bn">Bengali (বাংলাদেশ)</option>
+                        <option value="en">English (US)</option>
+                        <option value="hi">Hindi (India)</option>
+                        <option value="ar">Arabic (UAE)</option>
+                    </select>
+
+                    <button type="submit" class="w-full bg-blue-600 py-4 rounded-xl font-bold text-xs uppercase tracking-widest">Execute AI Render</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setTask(task) { document.getElementById('taskInput').value = task; alert("Task set to: " + task); }
+        document.getElementById('renderForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const res = await fetch('/render', { method: 'POST', body: formData });
+            const blob = await res.blob();
+            document.getElementById('preview').src = URL.createObjectURL(blob);
+            document.getElementById('preview').classList.remove('hidden');
+            document.getElementById('uploadPlaceholder').classList.add('hidden');
+        };
+    </script>
+</body>
+</html>
