@@ -1,7 +1,4 @@
 flask
 gunicorn
-openai-whisper
 gTTS
-torch
-torchvision
 setuptools
